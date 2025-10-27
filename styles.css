@@ -677,6 +677,12 @@ h1, h2, h3 {
     /* 保持简洁，无特殊效果 */
 }
 
+/* 左侧单品图片 - 保持原比例不放大 */
+.left-section .main-image {
+    object-fit: contain; /* 保持比例，完整显示图片，不裁剪 */
+    object-position: center; /* 居中显示 */
+}
+
 /* 男装图片特殊样式 - 保持完整图片显示 */
 .main-image.mens-image {
     object-fit: contain; /* 保持比例，完整显示图片，不裁剪 */
