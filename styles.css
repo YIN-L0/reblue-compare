@@ -7,11 +7,11 @@
 
 /* CSS 变量 - 时尚配色方案 */
 :root {
-    /* 主色调 - 极简黑白灰 */
-    --color-primary: #000000;
-    --color-secondary: #1a1a1a;
-    --color-tertiary: #2d2d2d;
-    --color-background: #fafafa;
+    /* 主色调 - 深蓝色高级感 */
+    --color-primary: #0a1f44;
+    --color-secondary: #1a3a5c;
+    --color-tertiary: #2d4a6a;
+    --color-background: #f5f7fa;
     --color-surface: #ffffff;
     --color-border: #e5e5e5;
     --color-border-light: #f0f0f0;
@@ -666,7 +666,7 @@ h1, h2, h3 {
 .main-image {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* 保持比例，完整显示图片 */
+    object-fit: cover; /* 填充整个容器 */
     object-position: center; /* 居中显示 */
     border-radius: var(--radius-lg);
     transition: transform 0.3s ease;
