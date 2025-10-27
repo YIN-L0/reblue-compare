@@ -31,45 +31,25 @@ class RareCompare {
     }
 
     async loadOutfitData() {
-        // 女装数据（根据新的文件夹内容更新）
-        const womenOutfitFolders = [
-            'RR2256120200', 'RR2256120764', 'RR2256130901A', 'RR2256160741',
-            'RR2256160946A', 'RR2256162762', 'RR2256162973', 'RR2256241380B',
-            'RR2256242361', 'RR2256242382A', 'RR2256250313', 'RR2256250345',
-            'RR2256250363B', 'RR2256250383'
+        // 新的lookbook数据，使用reblue_compare_lookbook文件夹
+        const lookbookFolders = [
+            '003', '004', '006', '015', '036', '040', '041', '086', '176'
         ];
 
-        // 男装数据（过滤掉没有虚拟试穿图的）
-        const menOutfitFolders = [
-            'RR1256120510', 'RR1256150561', 'RR1256160502', 'RR1256162757',
-            'RR1256182517', 'RR1256210608', 'RR1256210610B', 'RR1256220624A',
-            'RR1256230512', 'RR1256230630', 'RR1256261513B', 'RR1256261525'
-        ];
-
-        // 加载女装数据
-        const womenData = await Promise.all(
-            womenOutfitFolders.map(async (folder) => {
-                const outfit = await this.loadOutfitFolder(folder, 'women');
-                return outfit;
-            })
-        );
-
-        // 加载男装数据
-        const menData = await Promise.all(
-            menOutfitFolders.map(async (folder) => {
-                const outfit = await this.loadOutfitFolder(folder, 'men');
+        // 加载lookbook数据
+        const lookbookData = await Promise.all(
+            lookbookFolders.map(async (folder) => {
+                const outfit = await this.loadOutfitFolder(folder, 'lookbook');
                 return outfit;
             })
         );
 
         // 存储所有数据
         this.allOutfitData = {
-            women: womenData.filter(outfit => 
+            women: lookbookData.filter(outfit =>
                 outfit.productImages.length > 0 || outfit.lookbookImages.length > 0 || outfit.virtualTryonImages.length > 0
             ),
-            men: menData.filter(outfit => 
-                outfit.productImages.length > 0 || outfit.lookbookImages.length > 0 || outfit.virtualTryonImages.length > 0
-            )
+            men: [] // 暂时没有男装数据
         };
 
         // 设置当前显示的数据
@@ -78,11 +58,11 @@ class RareCompare {
         console.log('加载完成的套装数据:', this.allOutfitData);
     }
 
-    async loadOutfitFolder(folderName, gender = 'women') {
+    async loadOutfitFolder(folderName, gender = 'lookbook') {
         const outfit = {
             id: folderName,
-            name: folderName.replace(/_.*$/, ''), // 移除后缀
-            displayName: this.formatDisplayName(folderName),
+            name: folderName,
+            displayName: folderName, // 直接使用文件夹名称如 003, 004
             productImages: [],
             lookbookImages: [],
             virtualTryonImages: [],
@@ -92,30 +72,35 @@ class RareCompare {
 
         // 定义每个文件夹可能包含的图片
         const possibleImages = await this.getImagesForFolder(folderName, gender);
-        
+
         // 分类图片
         possibleImages.forEach(imageName => {
             // 跳过Thumbs.db文件
             if (imageName === 'Thumbs.db') return;
-            
-            const basePath = gender === 'men' ? 'data/RARE - 25 FALL lookbook-men' : 'data';
+
+            const basePath = 'reblue_compare_lookbook';
             const imagePath = `${basePath}/${folderName}/${imageName}`;
-            
-            if (imageName.startsWith('RR') || imageName.startsWith('RR1')) {
+
+            // 3254开头的文件作为产品图片（上装和下装）
+            if (imageName.startsWith('3254')) {
                 outfit.productImages.push({
                     name: imageName,
                     path: imagePath,
                     displayName: this.formatImageName(imageName)
                 });
-            } else if (imageName.startsWith('2506') || imageName.startsWith('250614') || imageName.startsWith('250616')) {
-                outfit.lookbookImages.push({
+            }
+            // upload开头的文件作为虚拟试穿图片
+            else if (imageName.toLowerCase().startsWith('upload')) {
+                console.log(`为${folderName}添加虚拟试穿图片: ${imageName}`);
+                outfit.virtualTryonImages.push({
                     name: imageName,
                     path: imagePath,
                     displayName: this.formatImageName(imageName)
                 });
-            } else if (imageName.startsWith('UPLOAD')) {
-                console.log(`为${folderName}添加虚拟试穿图片: ${imageName}`);
-                outfit.virtualTryonImages.push({
+            }
+            // 其他图片（如003.jpg, 004.jpg等）作为lookbook图片
+            else {
+                outfit.lookbookImages.push({
                     name: imageName,
                     path: imagePath,
                     displayName: this.formatImageName(imageName)
@@ -133,11 +118,77 @@ class RareCompare {
         return outfit;
     }
 
-    async getImagesForFolder(folderName, gender = 'women') {
+    async getImagesForFolder(folderName, gender = 'lookbook') {
         // 这里返回每个文件夹中的图片文件名
         // 在实际应用中，这些数据应该来自服务器或文件系统API
-        
-        // 女装数据（根据当前文件夹内容更新）
+
+        // lookbook数据
+        const lookbookFolderContents = {
+            '003': [
+                '003.jpg',
+                '325436014M02.jpg',
+                '325466004P17.jpg',
+                'upload_003.jpg'
+            ],
+            '004': [
+                '004.jpg',
+                '325436015Z44.jpg',
+                '325439019N02.jpg',
+                'upload_004.jpg'
+            ],
+            '006': [
+                '006.jpg',
+                '325420001M08.jpg',
+                '325439019N02.jpg',
+                'upload_006.jpg'
+            ],
+            '015': [
+                '015.jpg',
+                '325406018B03.jpg',
+                '325466032M10.jpg',
+                '3254C2025B03.jpg',
+                'ai-generated-1761374045129_无外套.jpg',
+                'upload_015.jpg'
+            ],
+            '036': [
+                '036.jpg',
+                '325450031M10.jpg',
+                '3254B4056P17.jpg',
+                'upload_036.jpg'
+            ],
+            '040': [
+                '040.jpg',
+                '325466048P14.jpg',
+                '3254D1040B15.jpg',
+                'upload_040.jpg'
+            ],
+            '041': [
+                '041.jpg',
+                '325437061P16.jpg',
+                '325466062P17.jpg',
+                'ai-generated-1761375161451.jpg',
+                'upload_041.jpg'
+            ],
+            '086': [
+                '086.jpg',
+                '325450085L16.jpg',
+                '3254C0079L16.jpg',
+                'upload_086.jpg'
+            ],
+            '176': [
+                '176.jpg',
+                '325435146B03.jpg',
+                '325450131M01.jpg',
+                'upload_176.jpg'
+            ]
+        };
+
+        // 如果是lookbook类型，返回lookbook数据
+        if (gender === 'lookbook') {
+            return lookbookFolderContents[folderName] || [];
+        }
+
+        // 女装数据（保留旧数据以防需要）
         const womenFolderContents = {
             'RR2256120200': [
                 '250618RARE0477.jpg',
