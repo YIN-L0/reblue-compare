@@ -1,0 +1,31 @@
+🚀 GitHub Pages 部署命令
+
+请将以下命令中的 "YOUR_USERNAME" 替换为您的真实GitHub用户名，然后在终端执行：
+
+# 1. 添加远程仓库
+git remote add origin https://github.com/YOUR_USERNAME/rare-compare.git
+
+# 2. 推送到GitHub
+git branch -M main
+git push -u origin main
+
+# 3. 如果推送成功，您的网站将在以下地址可用：
+# https://YOUR_USERNAME.github.io/rare-compare
+
+=======================================================
+
+示例（如果您的GitHub用户名是 "example-user"）：
+
+git remote add origin https://github.com/example-user/rare-compare.git
+git branch -M main
+git push -u origin main
+
+网站地址：https://example-user.github.io/rare-compare
+
+=======================================================
+
+注意事项：
+1. 确保您已在GitHub创建了名为 "rare-compare" 的公开仓库
+2. 如果推送时要求登录，请输入您的GitHub用户名和密码
+3. 部署完成后需要在GitHub仓库设置中启用Pages功能
+

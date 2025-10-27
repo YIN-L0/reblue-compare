@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RARE Compare - 部署状态</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .status-text {
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .access-links {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .access-link {
+            display: block;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .access-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .features {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .features h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .feature-item::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+        
+        .timestamp {
+            color: #666;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-icon">🚀</div>
+        
+        <h1>RARE Compare 部署成功</h1>
+        <div class="status-text">✅ 系统已启动并运行中</div>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">服务状态</div>
+                <div class="info-value">运行中</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">端口</div>
+                <div class="info-value">8000</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">本地IP</div>
+                <div class="info-value">192.168.1.31</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">协议</div>
+                <div class="info-value">HTTP</div>
+            </div>
+        </div>
+        
+        <div class="access-links">
+            <a href="http://localhost:8000" class="access-link">
+                🏠 本地访问 (localhost:8000)
+            </a>
+            <a href="http://192.168.1.31:8000" class="access-link">
+                🌐 局域网访问 (192.168.1.31:8000)
+            </a>
+        </div>
+        
+        <div class="features">
+            <h3>🎯 已更新功能</h3>
+            <div class="feature-list">
+                <div class="feature-item">14个女装款式</div>
+                <div class="feature-item">12个男装款式</div>
+                <div class="feature-item">UPLOAD前缀虚拟试穿</div>
+                <div class="feature-item">响应式设计</div>
+                <div class="feature-item">图片预览功能</div>
+                <div class="feature-item">性别切换功能</div>
+            </div>
+        </div>
+        
+        <div class="timestamp">
+            部署时间: <span id="timestamp"></span>
+        </div>
+    </div>
+    
+    <script>
+        // 显示当前时间
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('zh-CN');
+        
+        // 定期检查服务器状态
+        function checkServerStatus() {
+            fetch('/')
+                .then(response => {
+                    if (response.ok) {
+                        document.querySelector('.status-text').textContent = '✅ 系统已启动并运行中';
+                        document.querySelector('.status-icon').style.background = '#4CAF50';
+                    }
+                })
+                .catch(() => {
+                    document.querySelector('.status-text').textContent = '❌ 服务器连接失败';
+                    document.querySelector('.status-icon').style.background = '#f44336';
+                });
+        }
+        
+        // 每30秒检查一次状态
+        setInterval(checkServerStatus, 30000);
+        checkServerStatus();
+    </script>
+</body>
+</html>
